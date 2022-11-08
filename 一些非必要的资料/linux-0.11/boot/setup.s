@@ -108,11 +108,11 @@ no_disk1:
 is_disk1:
 
 ; now we want to move to protected mode ...
-; 关闭中断（后面代码会把BIOS的中断向量表覆盖掉），准备切换到保护模式
+; 关闭中断(后面代码会把BIOS的中断向量表覆盖掉)，准备切换到保护模式
 	cli			; no interrupts allowed ;
 
 ; first we move the system to it's rightful place
-
+; 移动 操作系统代码到  0x0000 这个位置
 	mov	ax,#0x0000
 	cld			; 'direction'=0, movs moves forward
 do_move:
@@ -133,11 +133,13 @@ do_move:
 end_move:
 	mov	ax,#SETUPSEG	; right, forgot this at first. didn't work :-)
 	mov	ds,ax
+	;将 idt_48 标签对应的地址 放到idtr寄存器 中断描述符
 	lidt	idt_48		; load idt with 0,0
+	;将gdt_48标签对应的地址 放到gdtr寄存器 全局描述符
 	lgdt	gdt_48		; load gdt with whatever appropriate
 
 ; that was painless, now we enable A20
-
+; 启用A20地址线(突破电子信号20位宽，变成32位可用，是为了兼容历史CPU只有20位的模式)
 	call	empty_8042
 	mov	al,#0xD1		; command write
 	out	#0x64,al
@@ -153,7 +155,7 @@ end_move:
 ; rectify it afterwards. Thus the bios puts interrupts at 0x08-0x0f,
 ; which is used for the internal hardware interrupts as well. We just
 ; have to reprogram the 8259's, and it isn't fun.
-
+;对可编程中断控制器 8259 芯片进行的编程 也是因为IBM电脑设计历史原因 中断号冲突，所以要重新编程
 	mov	al,#0x11		; initialization sequence
 	out	#0x20,al		; send it to 8259A-1
 	.word	0x00eb,0x00eb		; jmp $+2, jmp $+2
@@ -190,9 +192,10 @@ end_move:
 ; things as simple as possible, we do no register set-up or anything,
 ; we let the gnu-compiled 32-bit programs do that. We just jump to
 ; absolute address 0x00000, in 32-bit protected mode.
-
+	;切换到保护模式
 	mov	ax,#0x0001	; protected mode (PE) bit
 	lmsw	ax		; This is it;
+	;跳转到0x000地址出执行，正式进入操作系统其他模块
 	jmpi	0,8		; jmp offset 0 of segment 8 (cs)
 
 ; This routine checks that the keyboard command queue is empty
@@ -218,11 +221,11 @@ gdt:
 	.word	0x9200		; data read/write
 	.word	0x00C0		; granularity=4096, 386
 
-idt_48:
+idt_48:;记录中断描述符表
 	.word	0			; idt limit=0
 	.word	0,0			; idt base=0L
 
-gdt_48:
+gdt_48: ;记录全局描述符表的地址
 	.word	0x800		; gdt limit=2048, 256 GDT entries
 	.word	512+gdt,0x9	; gdt base = 0X9xxxx
 	
