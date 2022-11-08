@@ -1,0 +1,164 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 56;
+	objects = {
+
+/* Begin PBXFileReference section */
+		3B3486EB291A2DB600DF70E2 /* init */ = {isa = PBXFileReference; lastKnownFileType = folder; path = init; sourceTree = "<group>"; };
+		3B3486EC291A2DB600DF70E2 /* tools */ = {isa = PBXFileReference; lastKnownFileType = folder; path = tools; sourceTree = "<group>"; };
+		3B3486ED291A2DB600DF70E2 /* .DS_Store */ = {isa = PBXFileReference; lastKnownFileType = file; path = .DS_Store; sourceTree = "<group>"; };
+		3B3486EE291A2DB600DF70E2 /* boot */ = {isa = PBXFileReference; lastKnownFileType = folder; path = boot; sourceTree = "<group>"; };
+		3B3486EF291A2DB600DF70E2 /* Makefile */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.make; path = Makefile; sourceTree = "<group>"; };
+		3B3486F0291A2DB600DF70E2 /* include */ = {isa = PBXFileReference; lastKnownFileType = folder; path = include; sourceTree = "<group>"; };
+		3B3486F1291A2DB600DF70E2 /* .vs */ = {isa = PBXFileReference; lastKnownFileType = folder; path = .vs; sourceTree = "<group>"; };
+		3B3486F2291A2DB600DF70E2 /* linux-0.11.iml */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = "linux-0.11.iml"; sourceTree = "<group>"; };
+		3B3486F3291A2DB600DF70E2 /* lib */ = {isa = PBXFileReference; lastKnownFileType = folder; path = lib; sourceTree = "<group>"; };
+		3B3486F4291A2DB600DF70E2 /* mm */ = {isa = PBXFileReference; lastKnownFileType = folder; path = mm; sourceTree = "<group>"; };
+		3B3486F5291A2DB600DF70E2 /* .vscode */ = {isa = PBXFileReference; lastKnownFileType = folder; path = .vscode; sourceTree = "<group>"; };
+		3B3486F6291A2DB600DF70E2 /* fs */ = {isa = PBXFileReference; lastKnownFileType = folder; path = fs; sourceTree = "<group>"; };
+		3B3486F7291A2DB600DF70E2 /* kernel */ = {isa = PBXFileReference; lastKnownFileType = folder; path = kernel; sourceTree = "<group>"; };
+		3B3486F8291A2DB600DF70E2 /* .idea */ = {isa = PBXFileReference; lastKnownFileType = folder; path = .idea; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXGroup section */
+		3B3486E5291A2DB600DF70E2 = {
+			isa = PBXGroup;
+			children = (
+				3B3486EB291A2DB600DF70E2 /* init */,
+				3B3486EC291A2DB600DF70E2 /* tools */,
+				3B3486ED291A2DB600DF70E2 /* .DS_Store */,
+				3B3486EE291A2DB600DF70E2 /* boot */,
+				3B3486EF291A2DB600DF70E2 /* Makefile */,
+				3B3486F0291A2DB600DF70E2 /* include */,
+				3B3486F1291A2DB600DF70E2 /* .vs */,
+				3B3486F2291A2DB600DF70E2 /* linux-0.11.iml */,
+				3B3486F3291A2DB600DF70E2 /* lib */,
+				3B3486F4291A2DB600DF70E2 /* mm */,
+				3B3486F5291A2DB600DF70E2 /* .vscode */,
+				3B3486F6291A2DB600DF70E2 /* fs */,
+				3B3486F7291A2DB600DF70E2 /* kernel */,
+				3B3486F8291A2DB600DF70E2 /* .idea */,
+			);
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXLegacyTarget section */
+		3B3486EA291A2DB600DF70E2 /* linux-0.11 */ = {
+			isa = PBXLegacyTarget;
+			buildArgumentsString = "$(ACTION)";
+			buildConfigurationList = 3B3486F9291A2DB600DF70E2 /* Build configuration list for PBXLegacyTarget "linux-0.11" */;
+			buildPhases = (
+			);
+			buildToolPath = /usr/bin/make;
+			buildWorkingDirectory = "/Users/chengqian/Documents/书籍/Linux0.11源码阅读/flash-linux0.11-talk/一些非必要的资料/linux-0.11";
+			dependencies = (
+			);
+			name = "linux-0.11";
+			passBuildSettingsInEnvironment = 1;
+			productName = "linux-0.11";
+		};
+/* End PBXLegacyTarget section */
+
+/* Begin PBXProject section */
+		3B3486E6291A2DB600DF70E2 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = 1;
+			};
+			buildConfigurationList = 3B3486E9291A2DB600DF70E2 /* Build configuration list for PBXProject "linux-0.11" */;
+			compatibilityVersion = "Xcode 14.0";
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = 3B3486E5291A2DB600DF70E2;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				3B3486EA291A2DB600DF70E2 /* linux-0.11 */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin XCBuildConfiguration section */
+		3B3486E7291A2DB600DF70E2 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
+				COPY_PHASE_STRIP = NO;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = macosx10.6;
+			};
+			name = Debug;
+		};
+		3B3486E8291A2DB600DF70E2 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
+				COPY_PHASE_STRIP = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				SDKROOT = macosx10.6;
+			};
+			name = Release;
+		};
+		3B3486FA291A2DB600DF70E2 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COPY_PHASE_STRIP = NO;
+				DEBUGGING_SYMBOLS = YES;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_ENABLE_FIX_AND_CONTINUE = YES;
+				GCC_GENERATE_DEBUGGING_SYMBOLS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				OTHER_CFLAGS = "";
+				OTHER_LDFLAGS = "";
+				PRODUCT_NAME = "linux-0.11";
+			};
+			name = Debug;
+		};
+		3B3486FB291A2DB600DF70E2 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COPY_PHASE_STRIP = YES;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				GCC_ENABLE_FIX_AND_CONTINUE = NO;
+				OTHER_CFLAGS = "";
+				OTHER_LDFLAGS = "";
+				PRODUCT_NAME = "linux-0.11";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		3B3486E9291A2DB600DF70E2 /* Build configuration list for PBXProject "linux-0.11" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				3B3486E7291A2DB600DF70E2 /* Debug */,
+				3B3486E8291A2DB600DF70E2 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		3B3486F9291A2DB600DF70E2 /* Build configuration list for PBXLegacyTarget "linux-0.11" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				3B3486FA291A2DB600DF70E2 /* Debug */,
+				3B3486FB291A2DB600DF70E2 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 3B3486E6291A2DB600DF70E2 /* Project object */;
+}

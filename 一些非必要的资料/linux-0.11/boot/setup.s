@@ -32,7 +32,7 @@ start:
 
 ; ok, the read went well so we get current cursor position and save it for
 ; posterity.
-
+; 获取光标位置
 	mov	ax,#INITSEG	; this is done in bootsect already, but...
 	mov	ds,ax
 	mov	ah,#0x03	; read cursor pos
@@ -40,19 +40,20 @@ start:
 	int	0x10		; save it in known place, con_init fetches
 	mov	[0],dx		; it from 0x90000.
 
+; 获取内存大小
 ; Get memory size (extended mem, kB)
 
 	mov	ah,#0x88
 	int	0x15
 	mov	[2],ax
-
+; 获取显卡显示模式
 ; Get video-card data:
 
 	mov	ah,#0x0f
 	int	0x10
 	mov	[4],bx		; bh = display page
 	mov	[6],ax		; al = video mode, ah = window width
-
+; 检查显示方式，并获取显示参数
 ; check for EGA/VGA and some config parameters
 
 	mov	ah,#0x12
@@ -62,6 +63,7 @@ start:
 	mov	[10],bx
 	mov	[12],cx
 
+; 获取第一块硬盘信息
 ; Get hd0 data
 
 	mov	ax,#0x0000
@@ -74,6 +76,7 @@ start:
 	rep
 	movsb
 
+; 获取第二块硬盘信息
 ; Get hd1 data
 
 	mov	ax,#0x0000
@@ -105,7 +108,7 @@ no_disk1:
 is_disk1:
 
 ; now we want to move to protected mode ...
-
+; 关闭中断（后面代码会把BIOS的中断向量表覆盖掉），准备切换到保护模式
 	cli			; no interrupts allowed ;
 
 ; first we move the system to it's rightful place
