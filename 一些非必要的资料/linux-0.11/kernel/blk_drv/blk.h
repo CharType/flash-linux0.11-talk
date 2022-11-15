@@ -19,16 +19,26 @@
  * request for paging requests when that is implemented. In
  * paging, 'bh' is NULL, and 'waiting' is used to wait for
  * read/write completion.
+ * 这个request对象代表一次读取硬盘请求
  */
 struct request {
+	// dev表示设备号，-1就表示空闲
 	int dev;		/* -1 if no request */
+	// cmd 表示命令 表示本次操作是读操作或者是写操作
 	int cmd;		/* READ or WRITE */
+	// 表示操作时候产生的错误次数
 	int errors;
+	// 表示起始扇区
 	unsigned long sector;
+	// 表示扇区数
 	unsigned long nr_sectors;
+	// 表示数据缓冲区，读盘之后的数据存在内存中的什么位置
 	char * buffer;
+	// task_struct 代表一个进程，这里表示是哪个进程发起了这个请求
 	struct task_struct * waiting;
+	// 缓冲区头指针,用来操作缓冲区数据，后续补充
 	struct buffer_head * bh;
+	// 指向下一个请求想，这个数据结构是一个单链表的结构
 	struct request * next;
 };
 
