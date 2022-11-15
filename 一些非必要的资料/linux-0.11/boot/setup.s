@@ -192,7 +192,7 @@ end_move:
 ; things as simple as possible, we do no register set-up or anything,
 ; we let the gnu-compiled 32-bit programs do that. We just jump to
 ; absolute address 0x00000, in 32-bit protected mode.
-	;切换到保护模式
+	;修改cr0寄存器的值,切换到保护模式
 	mov	ax,#0x0001	; protected mode (PE) bit
 	lmsw	ax		; This is it;
 	;跳转到0x000地址出执行，正式进入操作系统其他模块

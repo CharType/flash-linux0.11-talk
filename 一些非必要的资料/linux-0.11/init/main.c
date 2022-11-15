@@ -107,8 +107,11 @@ void main(void)		/* This really IS void, no error here. */
  * Interrupts are still disabled. Do necessary setups, then
  * enable them
  */
+	// ORIG_ROOT_DEV 根设备文件号
  	ROOT_DEV = ORIG_ROOT_DEV;
  	drive_info = DRIVE_INFO;
+	// 计算 memory_end 和 buffer_memory_end 和 main_memory_start 的值，
+	// 后面用来管理内存和缓冲区
 	memory_end = (1<<20) + (EXT_MEM_K<<10);
 	memory_end &= 0xfffff000;
 	if (memory_end > 16*1024*1024)
@@ -123,19 +126,27 @@ void main(void)		/* This really IS void, no error here. */
 #ifdef RAMDISK
 	main_memory_start += rd_init(main_memory_start, RAMDISK*1024);
 #endif
+
+	// 内存初始化
 	mem_init(main_memory_start,memory_end);
+	// 中断初始化
 	trap_init();
 	blk_dev_init();
 	chr_dev_init();
+	// 控制台相关的初始化，内部会设置键盘中断处理程序
 	tty_init();
 	time_init();
+	// 进程调度初始化
 	sched_init();
 	buffer_init(buffer_memory_end);
 	hd_init();
 	floppy_init();
+	// 对应着 sti指令，表示允许中断
 	sti();
+	// 切换到用户态
 	move_to_user_mode();
 	if (!fork()) {		/* we count on this going ok */
+	// 启动一个Shell终端，接收用户输入的命令
 		init();
 	}
 /*
@@ -145,6 +156,7 @@ void main(void)		/* This really IS void, no error here. */
  * can run). For task0 'pause()' just means we go check if some other
  * task can run, and if not we return here.
  */
+	// 死循环，保证main函数不退出
 	for(;;) pause();
 }
 

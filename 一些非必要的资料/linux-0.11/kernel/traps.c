@@ -181,10 +181,13 @@ void do_reserved(long esp, long error_code)
 void trap_init(void)
 {
 	int i;
-
+	// 在中断描述符表中插入中断描述符 第一个参数是中断号，第二个参数是函数地址
 	set_trap_gate(0,&divide_error);
 	set_trap_gate(1,&debug);
 	set_trap_gate(2,&nmi);
+	// set_trap_gate 和 set_system_gate 最终都是调用 _set_gate 只是设置的中断描述符的特权级不同，
+	// set_trap_gate 设置的是内核态特权级0，
+	// set_system_gate 设置的是用户态特权级3
 	set_system_gate(3,&int3);	/* int3-5 can be called from all */
 	set_system_gate(4,&overflow);
 	set_system_gate(5,&bounds);

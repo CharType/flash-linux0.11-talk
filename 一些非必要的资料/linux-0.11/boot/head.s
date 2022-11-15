@@ -13,16 +13,16 @@
  */
 .text
 .globl _idt,_gdt,_pg_dir,_tmp_floppy_area
-_pg_dir:
+_pg_dir:				;这个标号表示页目录，后面设置分页的时候页目录会存放在这里，覆盖这里的代码
 startup_32:
 	movl $0x10,%eax
 	mov %ax,%ds
 	mov %ax,%es
 	mov %ax,%fs
 	mov %ax,%gs
-	lss _stack_start,%esp
-	call setup_idt
-	call setup_gdt
+	lss _stack_start,%esp	; 设置栈顶指针
+	call setup_idt ; 设置中断描述符
+	call setup_gdt ; 设置全局描述符
 	movl $0x10,%eax		; reload all the segment registers
 	mov %ax,%ds		; after changing gdt. CS was already
 	mov %ax,%es		; reloaded in 'setup_gdt'
@@ -46,6 +46,7 @@ startup_32:
 	orl $2,%eax		# set MP
 	movl %eax,%cr0
 	call check_x87
+	; 开启分页机制，并且跳转到main函数
 	jmp after_page_tables
 
 /*
@@ -75,6 +76,7 @@ check_x87:
  *  sure everything is ok. This routine will be over-
  *  written by the page tables.
  */
+ ;设置中断描述符表
 setup_idt:
 	lea ignore_int,%edx
 	movl $0x00080000,%eax
@@ -102,6 +104,7 @@ rp_sidt:
  *  rather long comment is certainly needed :-).
  *  This routine will beoverwritten by the page tables.
  */
+ ;设置全局描述符表地址，指向新的地址
 setup_gdt:
 	lgdt gdt_descr
 	ret
@@ -133,12 +136,15 @@ _tmp_floppy_area:
 	.fill 1024,1,0
 
 after_page_tables:
+	; 设置main函数中的参数
 	pushl $0		# These are the parameters to main :-)
 	pushl $0
 	pushl $0
+	;记录main函数返回后的地址
 	pushl $L6		# return address for main, if it decides to.
 	pushl $_main
 	jmp setup_paging
+	; 这个L6没什么用，因为main函数永远都不会返回
 L6:
 	jmp L6			# main should never return here, but
 				# just in case, we know what happens.
