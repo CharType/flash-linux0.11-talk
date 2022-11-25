@@ -619,7 +619,7 @@ void con_init(void)
 	register unsigned char a;
 	char *display_desc = "????";
 	char *display_ptr;
-
+	// 1.获取显示模式相关的信息
 	video_num_columns = ORIG_VIDEO_COLS;
 	video_size_row = video_num_columns * 2;
 	video_num_lines = ORIG_VIDEO_LINES;
@@ -646,6 +646,7 @@ void con_init(void)
 	}
 	else								/* If not, it is color. */
 	{
+		// 2. 显示映射的内存区域
 		video_mem_start = 0xb8000;
 		video_port_reg	= 0x3d4;
 		video_port_val	= 0x3d5;
@@ -673,12 +674,12 @@ void con_init(void)
 	}
 	
 	/* Initialize the variables used for scrolling (mostly EGA/VGA)	*/
-	
+	// 3.滚动屏幕操作时候的信息
 	origin	= video_mem_start;
 	scr_end	= video_mem_start + video_num_lines * video_size_row;
 	top	= 0;
 	bottom	= video_num_lines;
-
+	// 4.定位光标，并开启键盘中断
 	gotoxy(ORIG_X,ORIG_Y);
 	set_trap_gate(0x21,&keyboard_interrupt);
 	outb_p(inb_p(0x21)&0xfd,0x21);

@@ -65,6 +65,7 @@ int copy_mem(int nr,struct task_struct * p)
  * information (task[nr]) and sets up the necessary registers. It
  * also copies the data segment in it's entirety.
  */
+// 复制进程的结构信息
 int copy_process(int nr,long ebp,long edi,long esi,long gs,long none,
 		long ebx,long ecx,long edx,
 		long fs,long es,long ds,
@@ -73,7 +74,7 @@ int copy_process(int nr,long ebp,long edi,long esi,long gs,long none,
 	struct task_struct *p;
 	int i;
 	struct file *f;
-
+	// 调用 get_free_page 申请一页新的内存 用来存放task_struct结构信息
 	p = (struct task_struct *) get_free_page();
 	if (!p)
 		return -EAGAIN;

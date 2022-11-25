@@ -389,8 +389,11 @@ void sched_init(void)
 
 	if (sizeof(struct sigaction) != 16)
 		panic("Struct sigaction MUST be 16 bytes");
+	// 初始化TSS
 	set_tss_desc(gdt+FIRST_TSS_ENTRY,&(init_task.task.tss));
+	// 初始化LDT
 	set_ldt_desc(gdt+FIRST_LDT_ENTRY,&(init_task.task.ldt));
+	// 初始化 task 数组，并赋初始值 这个数组是存 task_struct 值的
 	p = gdt+2+FIRST_TSS_ENTRY;
 	for(i=1;i<NR_TASKS;i++) {
 		task[i] = NULL;
@@ -406,7 +409,9 @@ void sched_init(void)
 	outb_p(0x36,0x43);		/* binary, mode 3, LSB/MSB, ch 0 */
 	outb_p(LATCH & 0xff , 0x40);	/* LSB */
 	outb(LATCH >> 8 , 0x40);	/* MSB */
+	// 开启时钟中断，每次定时器会向CPU发出中断，CPU进行进程调度
 	set_intr_gate(0x20,&timer_interrupt);
 	outb(inb_p(0x21)&~0x01,0x21);
+	// 开启系统调用中断，用户态程序调用内核提供的方法都需要通过这个中断来执行
 	set_system_gate(0x80,&system_call);
 }

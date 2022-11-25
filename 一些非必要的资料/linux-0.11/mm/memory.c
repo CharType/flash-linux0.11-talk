@@ -77,6 +77,7 @@ __asm__("std ; repne ; scasb\n\t"
 	"1:"
 	:"=a" (__res)
 	:"0" (0),"i" (LOW_MEM),"c" (PAGING_PAGES),
+	; 使用到了mem_map 数据结构
 	"D" (mem_map+PAGING_PAGES-1)
 	:"di","cx","dx");
 return __res;
@@ -396,17 +397,21 @@ void do_no_page(unsigned long error_code,unsigned long address)
 	oom();
 }
 
+/**
+ * 使用mem_map数组来管理主内存 
+*/
 void mem_init(long start_mem, long end_mem)
 {
 	int i;
-
 	HIGH_MEMORY = end_mem;
+	// 系统内核内存区域，将对应的页直接设置成已使用
 	for (i=0 ; i<PAGING_PAGES ; i++)
 		mem_map[i] = USED;
 	i = MAP_NR(start_mem);
 	end_mem -= start_mem;
 	end_mem >>= 12;
 	while (end_mem-->0)
+	// 其他区域，设置成未使用
 		mem_map[i++]=0;
 }
 

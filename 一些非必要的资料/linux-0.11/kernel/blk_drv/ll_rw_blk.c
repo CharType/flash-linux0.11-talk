@@ -87,6 +87,7 @@ static void add_request(struct blk_dev_struct * dev, struct request * req)
 
 static void make_request(int major,int rw, struct buffer_head * bh)
 {
+	// 这里使用到了读取文件结构体
 	struct request * req;
 	int rw_ahead;
 

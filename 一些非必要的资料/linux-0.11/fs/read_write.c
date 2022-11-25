@@ -52,16 +52,22 @@ int sys_lseek(unsigned int fd,off_t offset, int origin)
 	return file->f_pos;
 }
 
+// 读文件的函数
+// fd 是文件描述符，通过文件描述符可以找到inode节点
+// buf 是复制到内存中的位置
+// count 是复制多少字节
 int sys_read(unsigned int fd,char * buf,int count)
 {
 	struct file * file;
 	struct m_inode * inode;
-
+	// 根据文件描述符从filp数组中取到文件信息
 	if (fd>=NR_OPEN || count<0 || !(file=current->filp[fd]))
 		return -EINVAL;
 	if (!count)
 		return 0;
+	// 校验buf区域的内存限制
 	verify_area(buf,count);
+	// 根据文件信息渠道inode节点
 	inode = file->f_inode;
 	if (inode->i_pipe)
 		return (file->f_mode&1)?read_pipe(inode,buf,count):-EIO;
