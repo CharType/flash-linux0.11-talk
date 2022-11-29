@@ -344,8 +344,12 @@ void do_hd_request(void)
 // blk_dev数组用来管理设备
 void hd_init(void)
 { 
+	// 索引 MAJOR_NR 的位置就是给硬盘留的位置
+	// DEVICE_REQUEST 是硬盘读写的函数实现，是do_hd_request函数地址
 	blk_dev[MAJOR_NR].request_fn = DEVICE_REQUEST;
+	// 设置硬盘读写中断处理程序
 	set_intr_gate(0x2E,&hd_interrupt);
+	// 往IO端口上写数据，允许硬盘控制器发送中断请求信号
 	outb_p(inb_p(0x21)&0xfb,0x21);
 	outb(inb_p(0xA1)&0xbf,0xA1);
 }
