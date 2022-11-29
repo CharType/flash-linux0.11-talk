@@ -26,6 +26,7 @@
 #include <asm/system.h>
 #include <asm/io.h>
 
+//  这个end 是内存内核区结束部分地址，缓冲区开始部分地址，这个地址是编译链接时期决定的
 extern int end;
 struct buffer_head * start_buffer = (struct buffer_head *) &end;
 struct buffer_head * hash_table[NR_HASH];
@@ -346,16 +347,24 @@ struct buffer_head * breada(int dev,int first, ...)
 	return (NULL);
 }
 
+// 初始化内存缓冲区 buffer_end 缓冲区内存结束地址
 void buffer_init(long buffer_end)
 {
+	// 初始化 buffer_head 结构体
+	// start_buffer 的地址是内核结束区地址
 	struct buffer_head * h = start_buffer;
 	void * b;
 	int i;
 
+	// 计算缓存块的值
 	if (buffer_end == 1<<20)
 		b = (void *) (640*1024);
 	else
 		b = (void *) buffer_end;
+
+	// b当前指向的是缓冲区最底部
+	// b(从下往上增长) 每次减少1024 并且和h+1（从上往下增长）不相遇
+	// 初始化b和h
 	while ( (b -= BLOCK_SIZE) >= ((void *) (h+1)) ) {
 		h->b_dev = 0;
 		h->b_dirt = 0;
@@ -365,18 +374,25 @@ void buffer_init(long buffer_end)
 		h->b_wait = NULL;
 		h->b_next = NULL;
 		h->b_prev = NULL;
+		// 指向缓存块b
 		h->b_data = (char *) b;
+		// 上一个节点
 		h->b_prev_free = h-1;
+		// 指向下一个节点
 		h->b_next_free = h+1;
 		h++;
 		NR_BUFFERS++;
 		if (b == (void *) 0x100000)
 			b = (void *) 0xA0000;
 	}
+	// h-- 指向最后一个head
 	h--;
+	// 处理双向链表的头和尾部分
 	free_list = start_buffer;
 	free_list->b_prev_free = h;
 	h->b_next_free = free_list;
+	// 初始化hash_table表，管理缓存头head
+	// （LRU淘汰算法）
 	for (i=0;i<NR_HASH;i++)
 		hash_table[i]=NULL;
 }	

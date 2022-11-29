@@ -131,15 +131,21 @@ void main(void)		/* This really IS void, no error here. */
 	mem_init(main_memory_start,memory_end);
 	// 中断初始化
 	trap_init();
+	// 块设备请求项的初始化
 	blk_dev_init();
+	// 空方法
 	chr_dev_init();
 	// 控制台相关的初始化，内部会设置键盘中断处理程序
 	tty_init();
+	// 时间初始化，从CMOS外设初始化时间
 	time_init();
 	// 进程调度初始化
 	sched_init();
+	// 初始化缓冲区
 	buffer_init(buffer_memory_end);
+	// 硬盘初始化
 	hd_init();
+	// 软盘的初始化
 	floppy_init();
 	// 对应着 sti指令，表示允许中断
 	sti();
