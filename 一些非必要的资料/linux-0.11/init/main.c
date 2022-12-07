@@ -148,6 +148,7 @@ void main(void)		/* This really IS void, no error here. */
 	// 软盘的初始化
 	floppy_init();
 	// 对应着 sti指令，表示允许中断
+	// 本质上是修改eflag状态寄存器的允许中断标志位if值设置为1
 	sti();
 	// 切换到用户态
 	move_to_user_mode();

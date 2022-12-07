@@ -85,12 +85,16 @@ static void sysbeep(void);
 #define RESPONSE "\033[?1;2c"
 
 /* NOTE! gotoxy thinks x==video_num_columns is ok */
+// 计算光标的位置
 static inline void gotoxy(unsigned int new_x,unsigned int new_y)
 {
 	if (new_x > video_num_columns || new_y >= video_num_lines)
 		return;
+	// x代表光标在哪一行
 	x=new_x;
+	// y代表光标在那一列
 	y=new_y;
+	// pos 计算光标所在位置对应的内存地址，根据行号和列号计算出来的
 	pos=origin + y*video_size_row + (x<<1);
 }
 

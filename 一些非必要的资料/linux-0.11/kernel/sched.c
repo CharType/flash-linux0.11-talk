@@ -120,7 +120,7 @@ void schedule(void)
 		}
 
 /* this is the scheduler proper: */
-
+	// 查找要切换的进程下标
 	while (1) {
 		c = -1;
 		next = 0;
@@ -138,6 +138,7 @@ void schedule(void)
 				(*p)->counter = ((*p)->counter >> 1) +
 						(*p)->priority;
 	}
+	// 切换进程
 	switch_to(next);
 }
 
@@ -329,9 +330,11 @@ void do_timer(long cpl)
 	}
 	if (current_DOR & 0xf0)
 		do_floppy_timer();
+		// 判断当前进程是否还有剩余时间片，如果有，直接返回，进程继续执行
 	if ((--current->counter)>0) return;
 	current->counter=0;
 	if (!cpl) return;
+	// 如果没有，进行进程的调度
 	schedule();
 }
 

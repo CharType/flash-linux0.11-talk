@@ -2,6 +2,7 @@
 #define _SCHED_H
 
 #define NR_TASKS 64
+// 时钟中断调用频率（毫秒）
 #define HZ 100
 
 #define FIRST_TASK task[0]
@@ -77,8 +78,11 @@ struct tss_struct {
 
 struct task_struct {
 /* these are hardcoded - don't touch */
+	// 进程的状态 0 - 5 对应不同的状态 对应着 TASK_RUNNING 这个宏
 	long state;	/* -1 unrunnable, 0 runnable, >0 stopped */
+	// 剩余时间片，每次CPU收到时钟中断，就会对当前运行的进程的这个值-1，减到0 的时候就切换进程
 	long counter;
+	// 进程的优先级，这个值是一个数字，每次进程被调度的时候这个值就会赋值给counter，这个值夜就是进程每次被调度获得的执行时间
 	long priority;
 	long signal;
 	struct sigaction sigaction[32];
@@ -103,6 +107,7 @@ struct task_struct {
 /* ldt for this task 0 - zero 1 - cs 2 - ds&ss */
 	struct desc_struct ldt[3];
 /* tss for this task */
+	// 当前进程的执行上下文，所有寄存器的信息
 	struct tss_struct tss;
 };
 

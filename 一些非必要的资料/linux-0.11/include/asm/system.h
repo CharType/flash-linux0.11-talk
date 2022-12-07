@@ -1,10 +1,11 @@
 #define move_to_user_mode() \
 __asm__ ("movl %%esp,%%eax\n\t" \
-	"pushl $0x17\n\t" \
-	"pushl %%eax\n\t" \
+	"pushl $0x17\n\t" \ 
+	"pushl %%eax\n\t" \ // 给SS赋值
 	"pushfl\n\t" \
-	"pushl $0x0f\n\t" \
+	"pushl $0x0f\n\t" \ // 给CS赋值
 	"pushl $1f\n\t" \
+	// 通过中断返回返回到用户态
 	"iret\n" \
 	"1:\tmovl $0x17,%%eax\n\t" \
 	"movw %%ax,%%ds\n\t" \

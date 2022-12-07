@@ -172,6 +172,7 @@ _device_not_available:
 	popl %ebp
 	ret
 
+; 时钟中断调用函数
 .align 2
 _timer_interrupt:
 	push %ds		# save ds,es and put kernel data space
@@ -186,12 +187,14 @@ _timer_interrupt:
 	mov %ax,%es
 	movl $0x17,%eax
 	mov %ax,%fs
+	; 增加系统滴答数
 	incl _jiffies
 	movb $0x20,%al		# EOI to interrupt controller #1
 	outb %al,$0x20
 	movl CS(%esp),%eax
 	andl $3,%eax		# %eax is CPL (0 or 3, 0=supervisor)
 	pushl %eax
+	; 调用 _do_timer 时间片-1 并且进行进程调度
 	call _do_timer		# 'do_timer(long CPL)' does everything from
 	addl $4,%esp		# task switching to accounting ...
 	jmp ret_from_sys_call

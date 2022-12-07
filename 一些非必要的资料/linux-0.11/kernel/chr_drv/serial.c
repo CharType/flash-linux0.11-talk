@@ -36,6 +36,7 @@ static void init(int port)
 
 void rs_init(void)
 {
+	// 串口中断开启，并且设置中断的处理程序
 	set_intr_gate(0x24,rs1_interrupt);
 	set_intr_gate(0x23,rs2_interrupt);
 	init(tty_table[1].read_q.data);
